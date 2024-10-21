@@ -26,3 +26,4 @@ Practical Time Complexity Limits
 8.	Factorial Time - O(n!):
 	- Extremely impractical for large  n . 
 	- 최대 10 ~ 15
+
