@@ -1,7 +1,52 @@
 ---
 title: python
+draft: true
 tags:
 ---
+# Syntax
+## Walrus Operator
+([PEP 572](https://www.python.org/dev/peps/pep-0572/))
+### 조건문
+**before**
+```python
+a = [1, 2, 3, 4] 
+n = len(a) 
+if n > 5: 
+	print(f"List is too long ({n} elements, expected <= 5)")
+```
+**after**
+```python
+a = [1, 2, 3, 4] 
+if (n := len(a)) > 5:
+	print(f"List is too long ({n} elements, expected <= 5)")
+```
+### While문
+**before**
+```python
+while True:
+    chunk = file.read(128)
+    if chunk:
+        break
+    process(chunk)
+```
+**after**
+```python
+while chunk := file.read(128): 
+	process(chunk)
+```
+### Comprehesion
+**before**
+```python
+y = f(x) 
+[y, y**2, y**3]
+```
+**after**
+```python
+[y := f(x), y**2, y**3]
+```
+## getattr
+variable method names
+dynamic method calls
 # Cocurrent jobs
 ## Futures
 js에서의 Promise와 같은 것이다
@@ -12,6 +57,10 @@ futures.ThreadPoolExecutor, futures.ProcessPoolExecutor를 이용해서 과거�
 4. future.cancel
 5. concurrent.futures.as_completed
 위와 같은 메소드들을 사용할 수 있다
+### ThreadPoolExecutor
+
+### ProcessPoolExecutor
+
 ## Coroutine과 asyncio
 asyncio는 event loop을 받아와서 coroutine을 실행시킨다. 그 절차를 간단하게 한 코드는 다음과 같다
 `asyncio.run()`
@@ -25,6 +74,8 @@ loop.close()
 1. await
 2. create_task
 3. gather
+## Gevent
+[[Greenlet and Gevent]]
 # Pytest
 
 ## fixture
@@ -74,6 +125,7 @@ pytest -n 3
 ```
 # Poetry
 ## poetry로 프로젝트 내부에 virtualenv 환경 구축하는 방법
+
 ```sh
 poetry config virtualenvs.in-project true
 poetry config virtualenvs.path "./.venv"
@@ -82,3 +134,14 @@ poetry config virtualenvs.path "./.venv"
 poetry install && poetry update
 ```
 [링크](https://amazingguni.medium.com/python-poetry%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-vscode%EC%97%90%EC%84%9C-%EA%B0%9C%EB%B0%9C%ED%95%A0-%EB%95%8C-interpreter%EB%A5%BC-%EC%9E%A1%EB%8A%94-%EB%B0%A9%EB%B2%95-e1806f093e6d)
+
+## requirements.txt 만들기
+```sh
+poetry export --without-hashes --format=requirements.txt > requirements.txt
+```
+
+## requirement.txt에서 불러오기
+```sh
+poetry add $(cat requirements.txt)
+```
+

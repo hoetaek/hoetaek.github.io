@@ -7,7 +7,14 @@ title: Django
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete  
 find . -path "*/migrations/*.pyc" -delete
 ```
-
+1. drop database
+2. migrate
+```sh
+python manage.py makemigrations
+python manage.py migrate
+```
+출처(참고문헌)
+- https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
 ## Indexing
 
 ## M2M models
@@ -140,6 +147,6 @@ ps aux | grep gunicorn | grep -v grep | awk '{print $2}' | xargs kill -9
 ```
 # celery
 ## Installation
-[[설치하는 법|celery 설치하기]]
+[[celery 설치하는 법|celery 설치하기]]
 ## Usage
 

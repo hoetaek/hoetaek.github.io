@@ -12,24 +12,17 @@ sudo yum install gcc libzstd-devel util-linux-user vim-enhanced htop git zsh cro
 - `git`: 소스 코드 버전 관리 시스템 - 프로그래밍 프로젝트에서 코드의 버전을 관리하는 데 사용
 - `zsh`: Z Shell의 약자로, 리눅스와 유닉스 시스템에서 사용되는 강력한 커맨드 라인 쉘
 - `cronie`: cron 작업을 관리하는 프로그램 - 주기적인 작업을 자동으로 실행하게 설정할 때 사용
-## 프로젝트에 필요한 패키지
-```sh
-sudo dnf install gettext graphviz
-```
-- gettext는 django translation에 사용됨
-- graphviz는 matplotlib에 사용됨
 ## Shell 설정
 ### oh-my-zsh 설치
 ```shell
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 ### shell plugin 설치
-### zsh-syntax-highlighting
+#### zsh-syntax-highlighting
 ```shell
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
-
-### zsh-autosuggestions
+#### zsh-autosuggestions
 ```shell
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 ```
@@ -165,9 +158,9 @@ http {
 # Project 설정하기
 ## git clone
 ### ssh key 만들기
-[링크](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
+[출처 링크](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
 ```sh
-ssh-keygen -t ed25519 -C "rhoetaek@gmail.com"
+ssh-keygen -t ed25519 -C "이메일"
 ```
 ### troubleshooting
 - github와 연결이 안될 시에 ssh-agent에 추가하기
@@ -187,7 +180,7 @@ Host github.com
 - `ssh -T git@github.com`
 ### deploy key 등록 후 git clone
 ```sh
-git clone git@github.com:I-STAT/istat_project.git
+git clone git@github.com:프로젝트.git
 ```
 
 ## nginx
@@ -230,15 +223,13 @@ su - postgres
 psql -c "ALTER USER postgres WITH PASSWORD 'your-password';"  
 exit
 ```
-password: istatmaster
-
 - 아래와 같이 유저를 만들고 데이터베이스 만들기
 ```
-ALTER USER postgres WITH PASSWORD 'istatmaster';
-CREATE USER istatmaster WITH PASSWORD 'ineedmoretime1!';
-CREATE DATABASE istat;
-GRANT ALL PRIVILEGES ON DATABASE istat TO istatmaster;
-ALTER DATABASE istat OWNER TO istatmaster;
+ALTER USER postgres WITH PASSWORD 'some_user';
+CREATE USER some_user WITH PASSWORD 'user_password';
+CREATE DATABASE database_name;
+GRANT ALL PRIVILEGES ON DATABASE istat TO some_user;
+ALTER DATABASE database_name OWNER TO some_user;
 ```
 - hba_file 찾기
 ```
@@ -251,54 +242,32 @@ sudo systemctl restart postgresql
 ```
 ## .env 수정
 ```sh
-cp istat_back/.env.sample istat_back/.env
+cp project/.env.sample project/.env
 ```
 
 -  django secret key 변경
 	[secret key 만들러 가기](https://djecrety.ir)
-- Allowed Hosts에 lightsail ip 주소 추가
+- Allowed Hosts에 ip 주소 추가
 ```
-ADMIN_LOGIN=istatking
-ADMIN_PASSWORD=kingIstat!
+ALLOWED_HOST= #ip주소
 
 # Django Database Settings
-DB_NAME=istat
-DB_USER=istatmaster
-DB_PASSWORD=ineedmoretime1!
+DB_NAME=database_name
+DB_USER=some_user
+DB_PASSWORD=user_password
 DB_HOST=localhost
 ```
 ## 라이브러리 설치
 ```sh
 source venv/bin/activate
-cd istat_project/istat_back
-```
-```
+
 pip install -r requirements.txt
-```
-## 폰트 옮기기
-```sh
-sudo cp assets/fonts/* /usr/share/fonts
-fc-cache -fv
-```
-## java 및 nltk 설정하기
-
-```sh
-sudo yum install java-11-amazon-corretto-devel
-mkdir nltk_data
-```
-
-```sh
-export NLTK_DATA="$HOME/nltk_data"
 ```
 ## DB migration
 ```sh
 python manage.py migrate
 ```
 ## django 실행하기
-log 파일 폴더 만들어두기
-```sh
-mkdir logs
-```
 script 실행권한 설정하기
 ```
 chmod +x scripts/start_prod.sh
@@ -318,12 +287,7 @@ python manage.py migrate
 
 python manage.py compilemessages
 
-gunicorn istat_back.wsgi -w 3 -b 0.0.0.0:8000 --error-logfile /home/ec2-user/logs/error.log --access-logfile /home/ec2-user/logs/access.log --timeout 100
-```
-- 장고에 접속해서 admin으로 로그인하기 
-```
-ADMIN_LOGIN=istatking
-ADMIN_PASSWORD=kingIstat!
+gunicorn istat_back.wsgi -w 3 -b 0.0.0.0:8000 --error-logfile /var/log/django-error.log --access-logfile /var/log/django-access.log --timeout 100
 ```
 # Frontend 설정하기
 ## 패키지 설치하기
@@ -353,9 +317,9 @@ sudo -u postgres psql -t -P format=unaligned -c 'show hba_file';
 - IPv4, IPv6 local connections의 method를 ident에서 md5로 수정
 - postgresql 재시작
 	- `sudo systemctl restart postgresql`
-### istat db의 Owner 설정
+### db의 Owner 설정
 `permission denied for schema public`
-- `ALTER DATABASE istat OWNER TO istatmaster;`
+- `ALTER DATABASE database_name OWNER TO some_user;`
 
 ### 폰트 못 읽을 때
 ```python
@@ -365,5 +329,3 @@ import matplotlib
 shutil.rmtree(matplotlib.get_cachedir())
 ```
 한 후에 파일 삭제
-
-[[02. Django/index#gunicorn]]
