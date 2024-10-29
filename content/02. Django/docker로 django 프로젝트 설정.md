@@ -1,6 +1,6 @@
 ---
 title: docker로 dev 환경에서 실행하는 법
-draft: false
+publish: true
 tags:
 ---
 > [!warning] settings 파일 확인

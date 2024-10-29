@@ -1,5 +1,5 @@
 ---
 title: Django Restframework
-draft: true
+publish: false
 tags:
 ---

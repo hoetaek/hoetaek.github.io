@@ -1,6 +1,6 @@
 ---
 title: 설치하는 법
-draft: true
+publish: false
 tags:
 ---
 ## 설치하는 방법

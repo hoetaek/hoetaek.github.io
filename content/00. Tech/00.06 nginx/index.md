@@ -1,6 +1,6 @@
 ---
 title: index
-draft: true
+publish: false
 tags:
 ---
 realip.conf

@@ -1,6 +1,6 @@
 ---
 title: 무제 파일
-draft: true
+publish: false
 tags:
 ---
 https://leekchan.com/gevent-tutorial-ko/

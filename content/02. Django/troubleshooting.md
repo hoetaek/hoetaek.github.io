@@ -1,5 +1,5 @@
 ---
 title: errors
-draft: true
+publish: false
 tags:
 ---

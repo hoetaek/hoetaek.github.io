@@ -1,6 +1,6 @@
 ---
 title: docker
-draft: false
+publish: true
 tags:
 ---
 # Docker Compose

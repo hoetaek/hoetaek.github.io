@@ -1,6 +1,6 @@
 ---
 title: AWS
-draft: false
+publish: true
 tags:
 ---
 # Cloudwatch

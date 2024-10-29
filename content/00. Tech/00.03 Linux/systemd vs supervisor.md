@@ -1,6 +1,6 @@
 ---
 title: systemd and supervisor
-draft: true
+publish: false
 tags:
 ---
 https://dabeen.medium.com/systemd-vs-supervisor-9241b77ec5d5

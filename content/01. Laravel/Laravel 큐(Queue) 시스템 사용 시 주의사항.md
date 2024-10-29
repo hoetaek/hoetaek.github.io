@@ -1,5 +1,5 @@
 ---
-title: 무제 파일
+title: Laravel 큐(Queue) 시스템 사용 시 주의사항
 publish: false
 tags:
 ---

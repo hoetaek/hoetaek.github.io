@@ -1,6 +1,6 @@
 ---
 title: django 패키지 설치하기
-draft: true
+publish: false
 tags:
 ---
 ### requirements.in

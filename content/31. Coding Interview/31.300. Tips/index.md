@@ -1,5 +1,5 @@
 ---
 title: Tips
-draft: true
+publish: false
 tags:
 ---

@@ -1,6 +1,6 @@
 ---
 title: Tech
-draft: false
+publish: true
 tags:
 ---
 # Git

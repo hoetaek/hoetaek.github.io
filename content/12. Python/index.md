@@ -1,6 +1,6 @@
 ---
 title: python
-draft: true
+publish: false
 tags:
 ---
 # Syntax

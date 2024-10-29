@@ -1,6 +1,6 @@
 ---
 title: Server Gateway Interface
-draft: true
+publish: false
 tags:
 ---
 WSGI와 ASGI

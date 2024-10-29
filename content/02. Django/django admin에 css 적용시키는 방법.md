@@ -1,6 +1,6 @@
 ---
 title: django admin에 css 적용시키는 방법
-draft: true
+publish: false
 tags:
 ---
 

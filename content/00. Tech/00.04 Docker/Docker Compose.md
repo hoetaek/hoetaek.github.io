@@ -1,6 +1,6 @@
 ---
 title: Docker Compose
-draft: false
+publish: false
 tags:
 ---
 # Volume
