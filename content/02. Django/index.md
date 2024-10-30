@@ -1,5 +1,5 @@
 ---
-title: Django
+title: 02. Django
 ---
 ## 초기 설정 및 배포
 
