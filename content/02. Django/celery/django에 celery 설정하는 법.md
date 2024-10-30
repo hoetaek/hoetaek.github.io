@@ -1,6 +1,6 @@
 ---
 title: django에 celery 설정하는 법
-publish: false
+publish: true
 tags:
 ---
 # 프로젝트 구조 준비

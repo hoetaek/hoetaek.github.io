@@ -1,6 +1,6 @@
 ---
 title: Web Server와 Application Server
-publish: false
+publish: true
 tags:
 ---
 # Server의 기본 개념

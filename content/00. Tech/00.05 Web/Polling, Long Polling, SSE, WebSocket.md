@@ -1,6 +1,5 @@
 ---
-title: 실시간 웹 통신 기술 - WebSocket과 Polling 비교
-publish: false
+publish: true
 tags:
 ---
 # 1. 개요

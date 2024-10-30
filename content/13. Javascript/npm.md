@@ -1,6 +1,6 @@
 ---
 title: npm
-publish: false
+publish: true
 tags:
 ---
 # Node Version Manager (nvm)

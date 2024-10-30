@@ -1,6 +1,6 @@
 ---
 title: Docker 환경에서 Django Celery 실행 가이드
-publish: false
+publish: true
 tags:
 ---
 # Docker Compose 설정
