@@ -5,7 +5,17 @@ import * as Component from "./quartz/components"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [],
+  afterBody: [
+    Component.Comments({
+      provider: "giscus",
+      options: {
+        repo: "hoetaek/taeknology",
+        repoId: "R_kgDOL4lVtg",
+        category: "General",
+        categoryId: "DIC_kwDOL4lVts4Ci6gC",
+      },
+    }),
+  ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jackyzha0/quartz",
@@ -13,6 +23,24 @@ export const sharedPageComponents: SharedLayout = {
     },
   }),
 }
+
+const customExplorer = Component.Explorer({
+  sortFn: (a, b) => {
+    if ((!a.file && !b.file) || (a.file && b.file)) {
+      // sensitivity: "base": Only strings that differ in base letters compare as unequal. Examples: a ≠ b, a = á, a = A
+      // numeric: true: Whether numeric collation should be used, such that "1" < "2" < "10"
+      return a.name.localeCompare(b.name, undefined, {
+        numeric: true,
+        sensitivity: "base",
+      })
+    }
+    if (a.file && !b.file) {
+      return 1
+    } else {
+      return -1
+    }
+  },
+})
 
 // components for pages that display a single page (e.g. a single note)
 export const defaultContentPageLayout: PageLayout = {
@@ -27,12 +55,13 @@ export const defaultContentPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Search(),
     Component.Darkmode(),
-    Component.DesktopOnly(Component.Explorer()),
+    Component.DesktopOnly(customExplorer),
   ],
   right: [
-    Component.Graph(),
+    Component.Graph({ localGraph: { scale: 0.8, opacityScale: 2 }, globalGraph: {} }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
+    Component.RecentNotes(),
   ],
 }
 
@@ -44,7 +73,7 @@ export const defaultListPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Search(),
     Component.Darkmode(),
-    Component.DesktopOnly(Component.Explorer()),
+    Component.DesktopOnly(customExplorer),
   ],
-  right: [],
+  right: [Component.RecentNotes()],
 }
