@@ -1,6 +1,6 @@
 ---
-title: Laravel 큐(Queue) 시스템 사용 시 주의사항
-publish: false
+date: 2024-10-08
+publish: true
 tags:
 ---
 Laravel의 큐 시스템은 무거운 작업을 비동기적으로 처리하여 애플리케이션의 응답 시간을 개선할 수 있게 해준다. 하지만 큐를 사용할 때는 여러 가지 고려해야 할 사항들이 있다.

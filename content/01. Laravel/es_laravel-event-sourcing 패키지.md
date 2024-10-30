@@ -1,3 +1,6 @@
+---
+publish:
+---
 
 # Installation
 ```sh

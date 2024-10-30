@@ -1,3 +1,6 @@
+---
+publish:
+---
 # 1장 이벤트 중심 설계
 action이란 business-related class이다
 
