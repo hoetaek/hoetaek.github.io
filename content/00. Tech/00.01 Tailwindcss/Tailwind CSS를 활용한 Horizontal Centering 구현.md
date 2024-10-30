@@ -1,5 +1,5 @@
 ---
-publish: false
+publish: true
 tags:
 ---
 # 기본 개념

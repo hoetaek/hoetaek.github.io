@@ -1,3 +1,6 @@
+---
+publish:
+---
 `sudo yum install -y docker`
 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html
 

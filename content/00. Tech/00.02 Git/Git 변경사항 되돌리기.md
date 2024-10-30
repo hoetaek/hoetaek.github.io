@@ -1,5 +1,5 @@
 ---
-publish: false
+publish: true
 tags:
 ---
 # 명령어 개요

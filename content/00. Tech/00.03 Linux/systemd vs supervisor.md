@@ -1,6 +1,5 @@
 ---
-title: systemd and supervisor
-publish: false
+publish: true
 tags:
 ---
 # 기본 개념
