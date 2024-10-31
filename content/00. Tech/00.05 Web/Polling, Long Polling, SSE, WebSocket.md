@@ -41,13 +41,30 @@ sequenceDiagram
 - 서버 부하 높음
 
 ### 코드 예시
-```javascript
+```php
+// routes/api.php
+Route::get('/notifications', [NotificationController::class, 'getLatest']);
+
+// app/Http/Controllers/NotificationController.php
+class NotificationController extends Controller
+{
+    public function getLatest()
+    {
+        $notifications = Auth::user()
+            ->notifications()
+            ->where('created_at', '>', now()->subMinutes(5))
+            ->get();
+            
+        return response()->json($notifications);
+    }
+}
+
+// JavaScript
 function startPolling() {
     setInterval(async () => {
         try {
-            const response = await fetch('/api/data');
-            const data = await response.json();
-            processData(data);
+            const response = await axios.get('/api/notifications');
+            processNotifications(response.data);
         } catch (error) {
             console.error('Polling error:', error);
         }
@@ -77,14 +94,48 @@ sequenceDiagram
 - HTTP 호환성 좋음
 
 ### 코드 예시
-```javascript
+```php
+// routes/api.php
+Route::get('/messages', [MessageController::class, 'waitForNew']);
+
+// app/Http/Controllers/MessageController.php
+class MessageController extends Controller
+{
+    public function waitForNew(Request $request)
+    {
+        $lastId = $request->input('last_id', 0);
+        $startTime = time();
+        $timeout = 20; // 20초 타임아웃
+
+        while (time() - $startTime < $timeout) {
+            $messages = Message::where('id', '>', $lastId)
+                ->where('chat_id', $request->chat_id)
+                ->get();
+
+            if ($messages->isNotEmpty()) {
+                return response()->json($messages);
+            }
+
+            sleep(1);
+        }
+
+        return response()->json([]); // 타임아웃 시 빈 응답
+    }
+}
+```
+
+```js
+// JavaScript
 async function startLongPolling() {
     try {
-        const response = await fetch('/api/updates', {
-            timeout: 30000
+        const lastMessageId = getLastMessageId(); // 마지막 메시지 ID 가져오기
+        const response = await axios.get('/api/messages', {
+            params: { last_id: lastMessageId }
         });
-        const data = await response.json();
-        processData(data);
+        
+        if (response.data.length > 0) {
+            processMessages(response.data);
+        }
         startLongPolling(); // 즉시 다음 요청
     } catch (error) {
         setTimeout(startLongPolling, 5000); // 에러 시 재시도
@@ -115,34 +166,51 @@ sequenceDiagram
 - 텍스트 기반 메시지
 
 ### 코드 예시
-```javascript
-// 클라이언트
-const eventSource = new EventSource('/api/events');
+```php
+// routes/web.php
+Route::get('/events', [EventController::class, 'stream']);
+
+// app/Http/Controllers/EventController.php
+class EventController extends Controller
+{
+    public function stream()
+    {
+        return response()->stream(function() {
+            while (true) {
+                // 새로운 이벤트 확인
+                $events = Event::where('created_at', '>', now()->subSeconds(2))->get();
+                
+                if ($events->isNotEmpty()) {
+                    echo "data: " . json_encode($events) . "\n\n";
+                    ob_flush();
+                    flush();
+                }
+                
+                sleep(2);
+            }
+        }, 200, [
+            'Cache-Control' => 'no-cache',
+            'Content-Type' => 'text/event-stream',
+            'Connection' => 'keep-alive',
+            'X-Accel-Buffering' => 'no'
+        ]);
+    }
+}
+```
+
+```js
+// JavaScript
+const eventSource = new EventSource('/events');
 
 eventSource.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('새로운 데이터:', data);
+    const events = JSON.parse(event.data);
+    processEvents(events);
 };
 
 eventSource.onerror = (error) => {
     console.error('SSE 에러:', error);
+    eventSource.close();
 };
-
-// 서버 (Node.js/Express)
-app.get('/api/events', (req, res) => {
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    const sendEvent = (data) => {
-        res.write(`data: ${JSON.stringify(data)}\n\n`);
-    };
-
-    // 이벤트 전송 예시
-    setInterval(() => {
-        sendEvent({ time: new Date() });
-    }, 1000);
-});
 ```
 
 ## 2.4 WebSocket
@@ -170,33 +238,78 @@ sequenceDiagram
 - 별도의 프로토콜 사용
 
 ### 코드 예시
-```javascript
-// 클라이언트
-const socket = new WebSocket('ws://example.com/socket');
+```php
+// config/broadcasting.php
+'connections' => [
+    'pusher' => [
+        'driver' => 'pusher',
+        'key' => env('PUSHER_APP_KEY'),
+        'secret' => env('PUSHER_APP_SECRET'),
+        'app_id' => env('PUSHER_APP_ID'),
+        'options' => [
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'host' => '127.0.0.1',
+            'port' => 6001,
+            'scheme' => 'http'
+        ],
+    ],
+],
 
-socket.onopen = () => {
-    console.log('연결됨');
-    socket.send('Hello Server!');
-};
+// app/Events/MessageSent.php
+class MessageSent implements ShouldBroadcast
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-socket.onmessage = (event) => {
-    console.log('메시지 수신:', event.data);
-};
+    public $message;
 
-socket.onerror = (error) => {
-    console.error('WebSocket 에러:', error);
-};
+    public function __construct(Message $message)
+    {
+        $this->message = $message;
+    }
 
-// 서버 (Node.js/ws)
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
+    public function broadcastOn()
+    {
+        return new PrivateChannel('chat.'.$this->message->chat_id);
+    }
+}
 
-wss.on('connection', (ws) => {
-    ws.on('message', (message) => {
-        console.log('수신:', message);
-        ws.send('서버 응답');
-    });
+// app/Http/Controllers/ChatController.php
+class ChatController extends Controller
+{
+    public function sendMessage(Request $request)
+    {
+        $message = Message::create([
+            'user_id' => Auth::id(),
+            'chat_id' => $request->chat_id,
+            'content' => $request->content
+        ]);
+
+        broadcast(new MessageSent($message))->toOthers();
+
+        return response()->json($message);
+    }
+}
+```
+
+```js
+// JavaScript (Laravel Echo)
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+    forceTLS: false,
+    disableStats: true,
 });
+
+Echo.private(`chat.${chatId}`)
+    .listen('MessageSent', (e) => {
+        console.log('새 메시지:', e.message);
+        appendMessage(e.message);
+    });
 ```
 
 # 3. 기술 비교 및 선택 기준
