@@ -89,6 +89,7 @@ status openvpn-status.log
 verb 3
 EOF
 ```
+[[OpenVPN 서버 설정 파일]]
 
 ## 잘못된 예시와 올바른 예시
 
