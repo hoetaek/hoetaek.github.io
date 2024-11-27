@@ -54,13 +54,14 @@ keepalive 10 120  # 연결 유지 및 점검 간격
 persist-key      # 재시작 시 키 유지
 persist-tun      # 재시작 시 터널 유지
 ```
-
+10초마다 ping을 보내고 120 timeout
+[[OpenVPN persist-key와 persist-tun 설정 상세 설명]]
 ## 5. 보안 설정
 ```bash
 user nobody      # 낮은 권한의 사용자로 실행
 group nogroup    # 낮은 권한의 그룹으로 실행
 ```
-
+[[OpenVPN Process 권한 관리와 보안 설계]]
 ## 6. 로깅 및 모니터링
 ```bash
 status openvpn-status.log  # 상태 로그 파일
