@@ -85,8 +85,6 @@ account required        pam_unix.so
    - `deny=5`: 5회 실패 시 잠금
    - `unlock_time=60`: 60초 후 잠금 해제
 
-> Tally는 '계수', '점수 기록', '집계'를 의미
-
 # 실제 구현 예시
 ## VPN Server 설정
 ```conf
