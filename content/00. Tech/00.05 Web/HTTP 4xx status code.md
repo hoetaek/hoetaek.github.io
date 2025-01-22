@@ -80,6 +80,126 @@ public function update(Post $post)
 }
 ```
 
+### 422 Unprocessable Entity
+요청의 문법은 올바르지만, 포함된 데이터의 의미적 오류로 인해 처리할 수 없는 경우 발생합니다. 식당에서 "스테이크 -3개 주세요"라고 주문하는 것과 같습니다. 문장 구조는 올바르지만(따라서 400이 아님), 실제로 처리할 수 없는 요청입니다.
+
+데이터 유효성 검증 예시:
+```php
+class RegistrationRequest extends FormRequest
+{
+    public function rules()
+    {
+        return [
+            'email' => 'required|email|unique:users',
+            'password' => [
+                'required',
+                'min:8',
+                'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/'
+            ],
+            'age' => 'required|numeric|between:0,120',
+            'username' => 'required|alpha_dash|unique:users'
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => '입력값 검증 실패',
+                'errors' => [
+                    'password' => [
+                        'current' => $this->input('password'),
+                        'error' => '비밀번호 요구사항을 충족하지 않습니다',
+                        'requirements' => [
+                            'min_length' => 8,
+                            'should_contain' => [
+                                '대문자',
+                                '숫자',
+                                '특수문자'
+                            ]
+                        ]
+                    ],
+                    'age' => [
+                        'current' => $this->input('age'),
+                        'error' => '유효하지 않은 나이',
+                        'allowed_range' => [0, 120]
+                    ]
+                ],
+                'submitted_data' => $this->validated()
+            ], 422)
+        );
+    }
+}
+```
+
+이 상태 코드는 다음과 같은 상황에서 주로 발생합니다:
+
+1. 필수 필드 누락:
+```javascript
+// 잘못된 요청
+{
+    "email": "user@example.com"
+    // password 필드 누락
+}
+```
+
+2. 데이터 형식 오류:
+```javascript
+// 잘못된 요청
+{
+    "email": "not-an-email",
+    "birth_date": "2024-13-45" // 잘못된 날짜 형식
+}
+```
+
+3. 비즈니스 규칙 위반:
+```javascript
+// 잘못된 요청
+{
+    "transfer_amount": 1000000,
+    "account_balance": 500  // 잔액 부족
+}
+```
+
+처리 방법:
+```php
+public function processTransfer(Request $request)
+{
+    $account = Account::find($request->account_id);
+    
+    if ($request->amount > $account->balance) {
+        return response()->json([
+            'message' => '거래 처리 실패',
+            'error' => [
+                'code' => 'INSUFFICIENT_FUNDS',
+                'details' => [
+                    'requested_amount' => $request->amount,
+                    'available_balance' => $account->balance,
+                    'shortage' => $request->amount - $account->balance
+                ],
+                'possible_solutions' => [
+                    '계좌 잔액 확인',
+                    '송금액 조정',
+                    '다른 결제 수단 사용'
+                ]
+            ]
+        ], 422);
+    }
+    
+    // 거래 처리 로직...
+}
+```
+
+400(Bad Request)와의 주요 차이점:
+- 400: 요청 자체의 구문이 잘못됨 (예: 잘못된 JSON 형식)
+- 422: 요청 구문은 올바르지만 포함된 데이터가 비즈니스 규칙이나 유효성 검증을 통과하지 못함
+
+효과적인 422 응답은 다음 세 가지 핵심 정보를 포함해야 합니다:
+1. 문제가 발생한 필드 식별
+2. 오류의 구체적인 원인 설명
+3. 문제 해결을 위한 명확한 지침
+
+이러한 상세한 오류 응답은 API 사용자가 문제를 신속하게 파악하고 해결할 수 있도록 도와줍니다.
 ### 404 Not Found
 요청한 리소스를 찾을 수 없을 때 발생합니다.
 
