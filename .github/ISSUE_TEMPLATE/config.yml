@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+
+templates:
+  - name: Bug Report
+    about: Create a report to help us improve
+    filename: bug_report.md
+  - name: Feature Request
+    about: Suggest an idea for this project
+    filename: feature_request.md
