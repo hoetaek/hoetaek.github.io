@@ -1,6 +1,6 @@
 ---
 date: 2025-03-25
-publish: false
+publish: true
 tags:
 ---
 ```table-of-contents
