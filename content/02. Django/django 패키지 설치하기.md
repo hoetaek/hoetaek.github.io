@@ -1,4 +1,5 @@
 ---
+date: 2025-03-24
 title: Django 패키지 설치하기
 publish: false
 tags:

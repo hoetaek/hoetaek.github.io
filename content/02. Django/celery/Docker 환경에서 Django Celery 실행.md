@@ -2,6 +2,7 @@
 title: Docker 환경에서 Django Celery 실행 가이드
 publish: true
 tags:
+date: 2025-03-24
 ---
 # Docker Compose 설정
 프로젝트의 전체 `docker-compose.yml` 파일에 다음 내용을 추가합니다:

@@ -1,4 +1,5 @@
 ---
+date: 2025-03-24
 title: Server Gateway Interface
 publish: false
 tags:

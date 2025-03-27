@@ -1,6 +1,7 @@
 ---
 title: 태기의 개발 지식창고
 publish: true
+date: 2025-03-24
 ---
 태기의 Taeknology에 오신 것을 환영합니다
 

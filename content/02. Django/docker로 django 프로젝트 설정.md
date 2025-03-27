@@ -2,6 +2,7 @@
 title: docker로 dev 환경에서 실행하는 법
 publish: true
 tags:
+date: 2025-03-24
 ---
 Django 프로젝트 환경 설정 완벽 가이드
 

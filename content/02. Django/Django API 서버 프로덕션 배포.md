@@ -2,6 +2,7 @@
 title: Django API 서버 프로덕션 배포
 publish: false
 tags:
+date: 2025-03-24
 ---
 Django API 서버 프로덕션 배포 가이드
 
