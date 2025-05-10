@@ -3,15 +3,6 @@ date: 2024-12-04
 publish: false
 tags:
 ---
-```table-of-contents
-title: # 목차
-style: nestedList # TOC style (nestedList|nestedOrderedList|inlineFirstLevel)
-minLevel: 0 # Include headings from the specified level
-maxLevel: 5 # Include headings up to the specified level
-includeLinks: true # Make headings clickable
-hideWhenEmpty: false # Hide TOC if no headings are found
-debugInConsole: false # Print debug info in Obsidian console
-```
 Linux의 'Everything is a File' 철학의 완벽한 이해
 
 # 필요한 배경 지식

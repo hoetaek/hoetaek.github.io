@@ -3,15 +3,6 @@ date: 2025-03-05
 publish: false
 tags:
 ---
-```table-of-contents
-title: 
-style: nestedList # TOC style (nestedList|nestedOrderedList|inlineFirstLevel)
-minLevel: 0 # Include headings from the specified level
-maxLevel: 0 # Include headings up to the specified level
-includeLinks: true # Make headings clickable
-hideWhenEmpty: false # Hide TOC if no headings are found
-debugInConsole: false # Print debug info in Obsidian console
-```
 https://news.hada.io/topic?id=19564&utm_source=slack&utm_medium=bot&utm_campaign=T02ATH4Q4
 
 - 반복적인 작업을 사람이 직접 수행하는 것은 비효율적이며, 자동화가 필요함
