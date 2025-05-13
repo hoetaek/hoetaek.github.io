@@ -1,6 +1,6 @@
 ---
 date: 2024-12-04
-publish: false
+publish: true
 tags:
 ---
 Linux의 'Everything is a File' 철학의 완벽한 이해

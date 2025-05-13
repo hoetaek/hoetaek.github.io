@@ -1,6 +1,6 @@
 ---
 date: 2024-11-21
-publish: false
+publish: true
 tags:
 ---
 # UID(User Identifier) 개요
