@@ -1,6 +1,6 @@
 ---
 date: 2024-12-04
-publish: false
+publish: true
 tags:
 ---
 # 필요한 배경 지식
