@@ -30,3 +30,25 @@ date: 2025-03-24
 	- [[13. Javascript/]]
 3. 인프라 관련은 [[21. AWS/]] 내용을 마련했습니다
 4. 그 외의 내용은 [[00. Tech/]]에 모아두었습니다
+
+# 작성 예정 내용
+- [ ] NAT Gateway에 대한 아티클 
+- [ ] db connection의 의미 
+- [ ] python에서 classmethod, staticmethod의 차이 
+- [ ] python의 metaclass 
+- [ ] python의 protocol과 interface와의 관계 
+- [ ] prefetch_related와 select_related의 sql문(with와 load에 대해서도) 
+- [ ] init 프로세스가 무엇인지 
+- [ ] 라라벨에서 Redis prefix 확인하는 법 
+- [ ] BOM 브라우저 객체 모델 
+- [ ] TCP와 UDP의 차이 
+- [ ] DNS의 정의와 동작 방식 
+- [ ] md5란 무엇인가? 
+- [ ] openvpn의 tun, tap 방식 차이와 선택 이유 
+- [ ] **RHEL8.2** OS 
+- [ ] linux에서 파일 탐색하는 방법 
+- [ ] text compare algorithm 
+- [ ] SELinux 
+- [ ] aws에서 리소스에 태그를 붙였을 때 생기는 각종 장점, 의미 
+- [ ] Ed2559 fingerprint 
+- [ ] Webmenifest의 사용 의미 
